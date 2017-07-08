@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block article %}
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title">Categories</h3></div>
+      <div class="panel-body">
+        <div class="list-group">
+          {% for category in categories %}
+            <a href="{{ url_for('showItems', category_id = category.id) }}" class="list-group-item">
+              <h5 class="list-group-item-heading"><strong>{{category.name}}</strong></h5>
+              <small class="list-group-item-text">Created by: <i>{{category.user.name}}</i></small>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="panel-footer text-right">
+        <a href="{{ url_for('addCategory') }}">Add category</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title">Last created items</h3></div>
+      <div class="panel-body">
+
+      </div>
+      <div class="panel-footer text-right">
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

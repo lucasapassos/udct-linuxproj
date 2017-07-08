@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block article %}
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+
+    <div class="panel panel-danger">
+      <div class="panel-heading"><h3 class="panel-title">Delete category "<strong>{{category.name}}?</strong>"</h3></div>
+      <div class="panel-body text-center">
+        <form method="post" action="{{ url_for('deleteCategory', category_id = category.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <div>
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a href="{{ url_for('showItems', category_id = category.id)}}" class="btn btn-warning">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

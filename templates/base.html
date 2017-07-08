@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <title>Project - Catalog</title>
+  <!-- Compiled and concatenated css and js files -->
+  <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/bootstrap.css') }}">
+  <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/main.css') }}">
+  <!-- Using the right font for the web site -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet">
+  <!-- The jQuery library for the project -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" defer></script>
+  <!-- Javascript code with async -->
+  <script type="text/javascript"
+    href="{{ url_for('static', filename='js/bootstrap.min.css') }}" defer></script>
+
+    {% block customheader %}{% endblock %}
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="row">
+        <div class="col-md-6 col-sm-2">
+          <div class="login">
+            {% if not session.username %}
+              <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+            {% else %}
+              <a href="{{ url_for('disconnect') }}" class="btn btn-danger">Logout, {{ session.username }}</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-10 text-right">
+          <h1 class="text-thin title-high">Project Udacity</h1>
+          <h4><b>Build an item Catalog Application</b></h4>
+        </div>
+      </div>
+      <hr class="divider">
+    </header>
+    <!-- TODO: Changes the articles for the projects running during the course -->
+    <article>
+    <!-- The links are fake. Do not use them -->
+    </br>
+    {% block article %}
+    {% endblock %}
+    </article>
+  </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+/* ----------- Galaxy S5 ----------- */
+
+/* Portrait and Landscape */
+/* Telefones em landscape e abaixo */
+@media (max-width: 480px) {
+
+}
+/* Telefone em landscape a tablet em portrait */
+@media (max-width: 767px) {
+  .udacity-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}
+/* tablet em portrait a landscape e desktop */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .text-small-media {
+    font-size: 80%;
+  }
+
+}
+/* Desktop grande */
+@media (min-width: 1204px) {
+
+}

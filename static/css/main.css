@@ -1,0 +1,37 @@
+
+body {
+  font-family: "Lato";
+  font-weight: 300;
+  color: #2d3c49;
+}
+
+.udacity-logo {
+  margin-top: 30px;
+}
+
+.text-thin {
+  font-weight: 100;
+}
+
+/* Using the right color for subtitles */
+.text-sub {
+  color: #7d97ad;
+}
+
+/* Using a high size for the title */
+.title-high {
+  font-size: 54px;
+}
+
+/* Making the divider solid and with the right size */
+.divider {
+  border-top: 4px solid #8c8b8b;
+}
+
+.topicimg {
+  width: 100%;
+}
+
+.login {
+  margin-top: 10%;
+}

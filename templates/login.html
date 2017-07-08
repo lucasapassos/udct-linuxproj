@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block customheader %}
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+{% endblock %}
+
+{% block article %}
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div id="result"></div>
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><strong>Authentication</strong></h3></div>
+      <div class="panel-body">
+        <p> Please, select Facebook or Google as authenticator </p>
+        <hr>
+        <div class="col-md-6 text-right">
+          <div id="signInButton">
+            <span class="g-signin"
+              data-scope="openid email"
+              data-clientid="980340354855-8qamkheonnr9e10heheeepn4feb9ph1j.apps.googleusercontent.com"
+              data-redirecturi="postmessage"
+              data-accesstype="offline"
+              data-cookiepolicy="single_host_origin"
+              data-callback="signInCallback"
+              data-approvalprompt="force">
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <!--FACEBOOK SIGN IN -->
+          <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="sendTokenToServer();" scope="public_profile,email"></div>
+          <!--END FACEBOOK SIGN IN -->
+        </div>
+
+      </div>
+    </div>
+    <p class="text-right">
+      <a href="{{ url_for('showCategories')}}"> Back to Item List</a>
+    </p>
+  </div>
+</div>
+
+<script>
+function signInCallback(authResult) {
+  if (authResult['code']) {
+    var csrf_token = "{{ csrf_token() }}";
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrf_token);
+            }
+        }
+    });
+    // Hide the sign-in button now that the user is authorized
+    $('#signinButton').attr('style', 'display: none');
+    // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+    $.ajax({
+      type: 'POST',
+      url: '/gconnect',
+      processData: false,
+      data: authResult['code'],
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+        if (result) {
+          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...</br></br>')
+         setTimeout(function() {
+          window.location.href = "/categories";
+         }, 4000);
+
+      } else if (authResult['error']) {
+    console.log('There was an error: ' + authResult['error']);
+  } else {
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+         }
+      }
+
+  }); } }
+</script>
+<script>
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '1930769293867650',
+    cookie     : true,  // enable cookies to allow the server to access
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.9' // use version 2.9
+  });
+  };
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.9&appId=1930769293867650";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function sendTokenToServer() {
+    var access_token = FB.getAuthResponse()['accessToken'];
+    console.log(access_token)
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+      var csrf_token = "{{ csrf_token() }}";
+
+      $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+              }
+          }
+      });
+     $.ajax({
+      type: 'POST',
+      url: '/fbconnect',
+      processData: false,
+      data: access_token,
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+        if (result) {
+          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+         setTimeout(function() {
+          window.location.href = "/categories";
+         }, 4000);
+
+      } else {
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+         }
+      }
+
+  });
+    });
+  }
+</script>
+{% endblock %}
