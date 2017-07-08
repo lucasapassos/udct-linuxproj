@@ -23,7 +23,7 @@ CLIENT_ID = json.loads(
     open('/var/www/catalog/client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Restaurant Menu Application"
 
-engine = create_engine('postgresql://postgres:udacity@localhost:5432/catalogdb')
+engine = create_engine('postgresql://catalog:ud@city@localhost:5432/catalogdb')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
